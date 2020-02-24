@@ -3,8 +3,9 @@ import Drawing from '../../p/Drawing.js'
 const canvas = document.querySelector("canvas")
 const p = new Drawing(canvas)
 
-let amplitude = 100
-let period = 120
+let angle = 0
+let aVelocity = 0
+let aAcceleration = 0.001
 
 p.setup(() => {
   p.size(640, 360)
@@ -13,11 +14,16 @@ p.setup(() => {
 p.draw(frameCount => {
   p.background(220)
 
-  let x = amplitude * Math.cos(Math.PI * 2 * frameCount / period)
-
-  p.stroke(0)
   p.fill(175)
+  p.stroke(0)
+
   p.translate(p.width / 2, p.height / 2)
-  p.line(0, 0, x, 0)
-  p.circle(x, 0, 20)
+  p.rotate(angle)
+
+  p.line(-50, 0, 50, 0)
+  p.circle(50, 0, 8)
+  p.circle(-50, 0, 8)
+
+  aVelocity += aAcceleration
+  angle += aVelocity
 })

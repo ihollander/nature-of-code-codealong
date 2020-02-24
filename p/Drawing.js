@@ -8,6 +8,12 @@ export default class Drawing {
     this.width = canvas.width
     this.height = canvas.height
     this.frames = 0
+
+    // frame rate limiter
+    this.fps = 60
+    this.interval = 1000 / this.fps
+    this.previousUpdate = performance.now()
+    this.fpsCount = 0
   }
 
   // allow setup to run from main
@@ -17,11 +23,27 @@ export default class Drawing {
 
   // main drawing loop
   draw = callback => {
-    this.frames++
-    callback(this.frames)
-
-    this.context.resetTransform()
     requestAnimationFrame(() => this.draw(callback))
+
+    let now = performance.now()
+    let delta = now - this.previousUpdate
+
+    if (delta > this.interval) {
+      this.fpsCount = 1000 / delta
+      this.previousUpdate = now - (delta % this.interval)
+      this.frames++
+      this.context.resetTransform()
+      callback(this.frames)
+      this.debug()
+    }
+  }
+
+  debug() {
+    this.pushMatrix()
+    this.context.fillStyle = "red"
+    this.context.font = "16px sans-serif"
+    this.context.fillText(`${this.fpsCount.toFixed(2)} fps`, 10, 20)
+    this.popMatrix()
   }
 
   // canvas settings
@@ -47,6 +69,14 @@ export default class Drawing {
 
   stroke(...args) {
     this.context.strokeStyle = rgbaToString(...args)
+  }
+
+  strokeWeight(width) {
+    this.context.lineWidth = width
+  }
+
+  noFill() {
+    this.context.fillStyle = `rgba(0,0,0,0)`
   }
 
   // transforms

@@ -1,5 +1,5 @@
-import PVector from "./p/PVector.js";
-import { random, constrain } from './p/utils/math.js'
+import PVector from "../../p/PVector.js";
+import { random, constrain } from '../../p/utils/math.js'
 
 export default class Mover {
   constructor(p) {
@@ -36,16 +36,16 @@ export default class Mover {
   }
 
   display() {
-    let angle = this.velocity.heading()
+    // let angle = this.velocity.heading()
 
     this.p.stroke(this.r, this.g, this.b)
     this.p.fill(this.r, this.g, this.b, 0.5)
 
-    this.p.context.save()
+    this.p.pushMatrix()
     this.p.translate(this.location.x, this.location.y)
-    this.p.rotate(angle)
+    this.p.rotate(this.angle)
     this.p.centerRectangle(0, 0, this.mass, this.mass)
-    this.p.context.restore()
+    this.p.popMatrix()
   }
 
   checkEdges() {

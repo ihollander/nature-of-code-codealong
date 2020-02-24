@@ -1,13 +1,10 @@
 import Drawing from '../../p/Drawing.js'
-import Oscillator from './Oscillator.js'
+import Mover from './Mover.js'
 
 const canvas = document.querySelector("canvas")
 const p = new Drawing(canvas)
 
-let oscillators = []
-for (let i = 0; i < 10; i++) {
-  oscillators.push(new Oscillator(p))
-}
+const m = new Mover(p)
 
 p.setup(() => {
   p.size(640, 360)
@@ -16,9 +13,7 @@ p.setup(() => {
 p.draw(frameCount => {
   p.background(220)
 
-  oscillators.forEach(o => {
-    o.oscillate()
-    o.display()
-  })
-
+  m.update()
+  m.display()
+  m.checkEdges()
 })

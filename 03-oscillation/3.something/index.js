@@ -1,4 +1,4 @@
-import Drawing from './p/Drawing.js'
+import Drawing from '../../p/Drawing.js'
 import Mover from './Mover.js'
 
 const canvas = document.querySelector("canvas")

@@ -1,5 +1,5 @@
-import PVector from "../p/PVector.js";
-import { random } from "../p/utils/math.js";
+import PVector from "../../p/PVector.js";
+import { random } from "../../p/utils/math.js";
 
 export default class Oscillator {
   constructor(p) {
