@@ -33,8 +33,7 @@ export default class PVector {
     }
   }
 
-  // return a copy
-  get() {
+  copy() {
     return new PVector(this.x, this.y)
   }
 

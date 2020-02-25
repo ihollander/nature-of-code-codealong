@@ -1,5 +1,5 @@
 import Drawing from '../../p/Drawing.js'
-import Mover from './Mover.js'
+import Mover from './Mover.js.js'
 
 const canvas = document.querySelector("canvas")
 const p = new Drawing(canvas)
