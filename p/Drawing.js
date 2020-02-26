@@ -104,9 +104,9 @@ export default class Drawing {
     this.context.stroke()
   }
 
-  circle(x, y, radius) {
+  circle(x, y, diameter) {
     this.context.beginPath()
-    this.context.arc(x, y, radius, 0, 2 * Math.PI)
+    this.context.arc(x, y, diameter / 2, 0, 2 * Math.PI)
     this.context.stroke()
     this.context.fill()
   }
