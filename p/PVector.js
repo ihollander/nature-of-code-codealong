@@ -9,22 +9,31 @@ export default class PVector {
   add(vector) {
     this.x += vector.x
     this.y += vector.y
+    return this
   }
 
   sub(vector) {
     this.x -= vector.x
     this.y -= vector.y
+    return this
   }
 
   mult(scale) {
     this.x *= scale
     this.y *= scale
+    return this
   }
 
   div(scale) {
     this.x = this.x / scale
     this.y = this.y / scale
+    return this
   }
+
+  dot(vector) {
+    return this.x * vector.x + this.y * vector.y
+  }
+
 
   limit(max) {
     if (this.mag > max) {
@@ -41,22 +50,32 @@ export default class PVector {
     return Math.sqrt(this.x ** 2 + this.y ** 2)
   }
 
+  setMag(len) {
+    return this.normalize().mult(len)
+  }
+
   normalize() {
     const mag = this.mag()
     if (mag !== 0) {
       this.div(mag)
     }
+    return this
   }
 
-  // angle maths
+  dist(v) {
+    return v.copy().sub(this).mag()
+  }
+
   heading() {
     return Math.atan2(this.y, this.x)
   }
 
+  static fromAngle(angle, length = 1) {
+    return new PVector(length * Math.cos(angle), length * Math.sin(angle))
+  }
+
   static random2D() {
-    const vec = new PVector(random(-1, 1), random(-1, 1))
-    vec.normalize()
-    return vec
+    return PVector.fromAngle(Math.random() * Math.PI * 2)
   }
 
   static add(vec1, vec2) {
@@ -73,5 +92,14 @@ export default class PVector {
 
   static div(vec, scale) {
     return new PVector(vec.x / scale, vec.y / scale)
+  }
+
+  static angleBetween(v1, v2) {
+    let dot = v1.dot(v2)
+    return Math.acos(dot / (v1.mag() * v2.mag()))
+  }
+
+  static dist(v1, v2) {
+    return v1.dist(v2)
   }
 }

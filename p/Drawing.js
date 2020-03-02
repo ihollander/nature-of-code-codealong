@@ -9,9 +9,11 @@ export default class Drawing {
     this.height = canvas.height
     this.frames = 0
 
+    // drawing state
+    this.vertices = []
+
     // frame rate limiter
     this.fps = 60
-    this.interval = 1000 / this.fps
     this.previousUpdate = performance.now()
     this.fpsCount = 0
   }
@@ -27,14 +29,15 @@ export default class Drawing {
 
     let now = performance.now()
     let delta = now - this.previousUpdate
+    let interval = 1000 / this.fps
 
-    if (delta > this.interval) {
+    if (delta > interval) {
       this.fpsCount = 1000 / delta
-      this.previousUpdate = now - (delta % this.interval)
+      this.previousUpdate = now - (delta % interval)
       this.frames++
       this.context.resetTransform()
       callback(this.frames)
-      this.debug()
+      // this.debug()
     }
   }
 
@@ -79,6 +82,10 @@ export default class Drawing {
     this.context.fillStyle = `rgba(0,0,0,0)`
   }
 
+  noStroke() {
+    this.context.strokeStyle = `rgba(0,0,0,0)`
+  }
+
   // transforms
   rotate(degrees) {
     this.context.rotate(degrees)
@@ -97,6 +104,33 @@ export default class Drawing {
   }
 
   // shapes
+  beginShape() {
+    this.vertices = []
+  }
+
+  vertex(x, y) {
+    this.vertices.push([x, y])
+  }
+
+  endShape(option) {
+    if (this.vertices.length) {
+      this.context.beginPath()
+
+      this.context.moveTo(this.vertices[0][0], this.vertices[0][1])
+      for (let i = 1; i < this.vertices.length; i++) {
+        let v = this.vertices[i]
+        this.context.lineTo(v[0], v[1])
+      }
+
+      if (option === "CLOSE") {
+        this.context.lineTo(this.vertices[0][0], this.vertices[0][1])
+        this.context.fill()
+      }
+      this.context.stroke()
+      this.context.closePath()
+    }
+  }
+
   line(x1, y1, x2, y2) {
     this.context.beginPath()
     this.context.moveTo(x1, y1)
